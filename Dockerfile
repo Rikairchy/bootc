@@ -40,6 +40,10 @@ COPY check-traefik.sh parse_check.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/check-traefik.sh /usr/local/bin/parse_check.sh
 
+RUN dnf clean all && \
+    export KVER=$(cd /usr/lib/modules && ls -d * | head -n 1) && \
+    find /usr/lib/modules -mindepth 1 -maxdepth 1 -not -name "$KVER" -exec rm -rf {} +
+
 RUN bootc container lint
 
 CMD ["/usr/lib/systemd/systemd"]
