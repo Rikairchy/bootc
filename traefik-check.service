@@ -1,0 +1,7 @@
+[Unit]
+Description=Check Local Traefik Status for Keepalived
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/check-traefik.sh

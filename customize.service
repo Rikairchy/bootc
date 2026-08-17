@@ -1,0 +1,14 @@
+[Unit]
+Description=Setup Swarm Firewall and NFS
+After=firewalld.service network-online.target
+Before=keepalived.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/keepalived/node.env
+ExecStartPre=/usr/bin/bash -c 'envsubst < /etc/keepalived/keepalived.conf.template > /etc/keepalived/keepalived.conf'
+ExecStart=/usr/bin/mount -t nfs -o rw,sync,hard,intr,noatime,nolock nfs.homelab.services:/nfs /nfs
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
