@@ -2,7 +2,7 @@ FROM registry.redhat.io/rhel10/rhel-bootc:latest
 
 RUN subscription-manager register --org=8014867 --activationkey=Lab && \
     dnf -y install dnf-plugins-core && \
-    dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/rhel/docker-ce.repo && \
+    dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo && \
     dnf -y install \
         docker-ce \
         docker-ce-cli \
