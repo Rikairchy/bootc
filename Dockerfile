@@ -1,6 +1,7 @@
 FROM registry.redhat.io/rhel10/rhel-bootc:latest
 
-RUN dnf -y install dnf-plugins-core && \
+RUN subscription-manager register --org=8014867 --activationkey=Lab && \
+    dnf -y install dnf-plugins-core && \
     dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/rhel/docker-ce.repo && \
     dnf -y install \
         docker-ce \
@@ -11,9 +12,10 @@ RUN dnf -y install dnf-plugins-core && \
         firewalld \
         keepalived \
         nfs-utils \
-        gettext \
-    && dnf clean all \
-    && rm -rf /var/cache/dnf
+        gettext && \
+        dnf clean all && \
+        subscription-manager unregister && \
+        rm -rf /var/cache/dnf
 
 ARG SSH_PUB_KEY
 RUN groupadd -g 1000 container && \
