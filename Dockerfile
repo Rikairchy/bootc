@@ -23,6 +23,7 @@ RUN groupadd -g 1000 container && \
     usermod -aG wheel,docker container && \
     install -d -m 0700 -o container -g container /home/container/.ssh && \
     echo "${SSH_PUB_KEY}" > /home/container/.ssh/authorized_keys && \
+    chown 1000:1000 /home/container/.ssh/authorized_keys && \
     chmod 600 /home/container/.ssh/authorized_keys && \
     restorecon -Rv /home/container && \
     mkdir -p /nfs && \
