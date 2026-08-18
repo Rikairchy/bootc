@@ -24,6 +24,7 @@ RUN groupadd -g 1000 container && \
     install -d -m 0700 -o container -g container /home/container/.ssh && \
     echo "${SSH_PUB_KEY}" > /home/container/.ssh/authorized_keys && \
     chmod 600 /home/container/.ssh/authorized_keys && \
+    restorecon -Rv /home/container && \
     mkdir -p /nfs && \
     echo "container ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/container && \
     chmod 0440 /etc/sudoers.d/container
@@ -32,7 +33,7 @@ COPY keepalived.conf.template /etc/keepalived/keepalived.conf.template
 
 COPY traefik-check.service traefik-check.timer customize.service /etc/systemd/system/
 
-RUN systemctl enable docker firewalld keepalived customize traefik-check.timer
+RUN systemctl enable docker firewalld keepalived customize traefik-check.timer sshd
 
 COPY public.xml /etc/firewalld/zones/public.xml
 
